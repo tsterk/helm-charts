@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx-service
+  namespace: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  labels:
+    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+spec:
+  selector:
+    app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+  ports:
+  - port: 8080
+    targetPort: 8080

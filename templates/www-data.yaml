@@ -1,0 +1,16 @@
+{{ if eq .Values.storage.enabled "true" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+  namespace: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  labels:
+    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+spec:
+  resources:
+    requests:
+      storage: {{ .Values.storage.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+{{ end }}

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm
+  labels:
+    app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm
+    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+spec:
+  replicas: {{ .Values.phpfpm.replicas | default "2" }}
+  selector:
+    matchLabels:
+      app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm
+      app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm
+        app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+    spec:
+      containers:
+      - name: php-fpm
+        image: registry.npohosting.nl/npohosting/php-fpm:{{ .Values.phpfpm.version | default "8.1.8" }}
+        env:
+        {{ if eq .Values.phpfpm.useDBsecret "true" }}
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: db.user
+                name: {{ .Values.mariadb.credentialsSecret }}
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: db.pass
+                name: {{ .Values.mariadb.credentialsSecret }}
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: db.root.pass
+                name: {{ .Values.mariadb.credentialsSecret }}
+        {{ end }}       
+        command: 
+          - /usr/libexec/s2i/run
+        resources:
+          requests:
+            cpu: {{ .Values.phpfpm.resources.cpuRequest | default "128m" }}
+            memory: {{ .Values.phpfpm.resources.memoryRequest | default "128Mi" }}
+          limits:
+            cpu: {{ .Values.phpfpm.resources.cpuRequest | default "256m" }}
+            memory: {{ .Values.phpfpm.resources.memoryRequest | default "256Mi" }}
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+          mountPath: /var/www/html
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm-config
+          mountPath: /usr/local/etc/php/conf.d
+      volumes:
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm-config
+          configMap:
+            name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm-config

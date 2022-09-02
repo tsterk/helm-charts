@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+  namespace: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  labels:
+    app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+spec:
+  replicas: {{ .Values.nginx.replicas | default "2" }}
+  selector:
+    matchLabels:
+      app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+      app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+        app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+    spec:
+      containers:
+      - name: nginx
+        image: registry.npohosting.nl/npohosting/nginx:{{ .Values.nginx.version }}
+        command:
+          - /usr/libexec/s2i/run
+        resources:
+          requests:
+            cpu: {{ .Values.nginx.resources.cpuRequest | default "64m" }}
+            memory: {{ .Values.nginx.resources.memoryRequest | default "64Mi" }}
+          limits:
+            cpu: {{ .Values.nginx.resources.cpuLimit | default "128m" }}
+            memory: {{ .Values.nginx.resources.memoryLimit | default "128Mi" }}
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+          mountPath: /var/www/html
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx-config
+          mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-www-data
+        - name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx-config
+          configMap:
+            name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx-config

@@ -1,0 +1,17 @@
+{{ if eq .Values.nginx.hpa.enabled "true" }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx-hpa
+  namespace: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
+  labels:
+    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}  
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-nginx
+  minReplicas: {{ .Values.nginx.hpa.minReplicas | default "2" }}
+  maxReplicas: {{ .Values.nginx.hpa.maxReplicas | default "4" }}
+  targetCPUUtilizationPercentage: {{ .Values.nginx.hpa.targetCPUUtilizationPercentage | default "80" }}
+{{ end }}

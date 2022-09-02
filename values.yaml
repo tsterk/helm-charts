@@ -1,0 +1,48 @@
+general:
+  toko: hens
+  env: prod
+
+route:
+  url: demo.timsterk.nl
+  tlsEnabled: "true"
+
+storage:
+  enabled: "true"       # False is not (yet) supported.
+  capacity: 1Gi
+
+nginx:
+  replicas: 2
+  documentRoot: /var/www/html
+  version: 1.23.1
+  resources:
+    cpuRequest: 128m
+    cpuLimit: 256m
+    memoryRequest: 128Mi
+    memoryLimit: 256Mi
+  hpa:
+    enabled: "true"
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80
+
+phpfpm:
+  replicas: 2
+  version: 8.1.8
+  resources:
+    cpuRequest: 128m
+    cpuLimit: 256m
+    memoryRequest: 128Mi
+    memoryLimit: 256Mi
+  hpa:
+    enabled: "true"
+    minReplicas: 2
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80  
+
+pipeline:
+  sourceUrl: git@github.com:tsterk/demo.timsterk.nl.git
+  cloneAction: pull
+
+mariadb:
+  localDB: "false"
+  storageCapacity: 1Gi
