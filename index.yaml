@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  managed-chp:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-03T08:47:15.254666+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 28b2d49d79627b73292da684134cf6d3bab740994b543c5c81e78527ffa911d4
+    name: managed-chp
+    type: application
+    urls:
+    - https://tsterk.github.io/helm-charts/managed-chp-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-09-03T08:47:15.251892+02:00"
