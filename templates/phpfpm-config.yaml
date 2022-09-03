@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}-phpfpm-config
-  namespace: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
-  labels:
-    app.kubernetes.io/part-of: {{ .Values.general.toko }}-{{ .Release.Name }}-{{ .Values.general.env }}
-data:
-  modules.ini: |
