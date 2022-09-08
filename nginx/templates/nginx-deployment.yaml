@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: registry.npohosting.nl/npohosting/nginx:{{ .Values.nginx.version | default "1.21" }}
+        image: registry.npohosting.nl/npohosting/nginx:{{ .Values.nginx.version }}
         command:
           - /usr/libexec/s2i/run
         resources:
