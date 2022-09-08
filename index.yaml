@@ -3,7 +3,7 @@ entries:
   managed-chp:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-09-07T14:51:00.256873+02:00"
+    created: "2022-09-08T05:31:45.024114184Z"
     description: Managed CHP Helm Chart
     digest: 3ef77a0f4ca4fa9d6b5b3cb17baa586d29753c866569984332b9136f0e777d1a
     name: managed-chp
@@ -13,7 +13,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-09-07T14:51:00.256464+02:00"
+    created: "2022-09-08T05:31:45.023541073Z"
     description: Managed CHP Helm Chart
     digest: 8248f6872bda4ea92a95dc637b0c45c6e38e7bdda56e0194ac14dd02f290bec8
     name: managed-chp
@@ -23,7 +23,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-09-07T14:51:00.255473+02:00"
+    created: "2022-09-08T05:31:45.022947578Z"
     description: A Helm chart for Kubernetes
     digest: 28b2d49d79627b73292da684134cf6d3bab740994b543c5c81e78527ffa911d4
     name: managed-chp
@@ -31,4 +31,15 @@ entries:
     urls:
     - https://tsterk.github.io/helm-charts/managed-chp-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-07T14:51:00.254235+02:00"
+  nginx:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-09-08T05:31:45.024307346Z"
+    description: Een nginx helm chart van de NPO
+    digest: d9f312a38823fc8bcb1c032ad240e968c2b63e997758478966da44a84c9efdcf
+    name: nginx
+    type: application
+    urls:
+    - https://tsterk.github.io/helm-charts/nginx-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-09-08T05:31:45.021907717Z"
