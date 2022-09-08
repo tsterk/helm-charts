@@ -1,2 +1,5 @@
 nginx:
   version: "1.21"
+  limits:
+    cpu: "500m"
+    memory: "128Mi"

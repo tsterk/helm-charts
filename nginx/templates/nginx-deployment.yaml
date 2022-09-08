@@ -18,7 +18,7 @@ spec:
           - /usr/libexec/s2i/run
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: {{ .Values.nginx.limits.memory }}
+            cpu: {{ .Values.nginx.limits.cpu }}
         ports:
         - containerPort: 8080
